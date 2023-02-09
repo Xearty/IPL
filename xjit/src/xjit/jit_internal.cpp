@@ -34,14 +34,13 @@ void X64Generator::PushIdentifier(const IPLString& name)
     }
 }
 
-
 int X64Generator::GetIdentifierRegister(const IPLString& name)
 {
     assert(identifier_to_register.find(name) != identifier_to_register.end() && "Identifier not pushed");
     return identifier_to_register.at(name);
 }
 
-void X64Generator::PushQWORD(uint64_t qword)
+void X64Generator::Push8Bytes(uint64_t qword)
 {
     for (int i = 0; i < sizeof(qword); ++i)
     {
@@ -49,7 +48,7 @@ void X64Generator::PushQWORD(uint64_t qword)
     }
 }
 
-void X64Generator::PushDWORD(uint32_t dword)
+void X64Generator::Push4Bytes(uint32_t dword)
 {
     for (int i = 0; i < sizeof(dword); ++i)
     {
@@ -61,22 +60,22 @@ void X64Generator::MovRegs(int to, int from)
 {
     // movsd  xmm0,QWORD PTR [rbp-0x11223344]
     PushBytes(0xF2, 0x0F, 0x10, 0x85);
-    PushDWORD(GetDisplacement(from));
+    Push4Bytes(GetDisplacement(from));
 
     // movq   QWORD PTR [rbp-0x18],xmm0
     PushBytes(0x66, 0x0F, 0xD6, 0x85);
-    PushDWORD(GetDisplacement(to));
+    Push4Bytes(GetDisplacement(to));
 }
 
 void X64Generator::MovRegAddress(int reg, const void* address)
 {
     // movabs rax, [absolute_address]
     PushBytes(0x48, 0x48, 0xA1);
-    PushQWORD((uint64_t)address);
+    Push8Bytes((uint64_t)address);
 
     // movq [rbp - 8], rax
     PushBytes(0x48, 0x89, 0x85);
-    PushDWORD(GetDisplacement(reg));
+    Push4Bytes(GetDisplacement(reg));
 }
 
 void X64Generator::MovRegNumber(int reg, double number)

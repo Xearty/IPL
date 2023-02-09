@@ -50,8 +50,8 @@ private:
     int GetIdentifierRegister(const IPLString& name);
     void SetIdentifierRegister(const IPLString& name, int reg);
     
-    void PushQWORD(uint64_t qword);
-    void PushDWORD(uint32_t dword);
+    void Push8Bytes(uint64_t qword);
+    void Push4Bytes(uint32_t dword);
 
     void MovRegs(int to, int from);
     void MovRegAddress(int reg, const void* address);

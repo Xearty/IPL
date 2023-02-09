@@ -48,11 +48,11 @@ void X64Generator::Visit(BinaryExpression* e)
 
     // movsd  xmm0, QWORD PTR[rbp - 0x8]
     PushBytes(0xF2, 0x0F, 0x10, 0x85);
-    PushDWORD(GetDisplacement(first_reg));
+    Push4Bytes(GetDisplacement(first_reg));
 
     // movsd  xmm1, QWORD PTR [rbp-0x10]
     PushBytes(0xF2, 0x0F, 0x10, 0x8D);
-    PushDWORD(GetDisplacement(second_reg));
+    Push4Bytes(GetDisplacement(second_reg));
 
     switch (e->GetOperator())
     {
@@ -84,7 +84,7 @@ void X64Generator::Visit(BinaryExpression* e)
 
     // movq    QWORD PTR [rbp+0x0], xmm0
     PushBytes(0x66, 0x0F, 0xD6, 0x85);
-    PushDWORD(GetDisplacement(registers.top()));
+    Push4Bytes(GetDisplacement(registers.top()));
 }
 
 void X64Generator::Visit(UnaryExpression* e)
@@ -99,14 +99,14 @@ void X64Generator::Visit(UnaryExpression* e)
 
             // movsd xmm0, QWORD PTR [bsp-0x00]
             PushBytes(0xF2, 0x0F, 0x10, 0x85);
-            PushDWORD(GetDisplacement(registers.top()));
+            Push4Bytes(GetDisplacement(registers.top()));
 
             registers.pop();
 
             // jmp to end of function
             return_fixup_offsets.push(executable_memory.size());
             PushBytes(0xE9);
-            PushDWORD(0x00);
+            Push4Bytes(0x00);
 
             // need to jump and pop registers
         } break;
@@ -145,24 +145,24 @@ void X64Generator::Visit(IfStatement* e)
 
     // ucomisd xmm0, QWORD PTR [rbp-0x11223344]
     PushBytes(0x66, 0x0F, 0x2E, 0x85);
-    PushDWORD(GetDisplacement(registers.top()));
+    Push4Bytes(GetDisplacement(registers.top()));
 
     // check je and jp (equality and parity)
     //jp
     jump_fixup_offsets.push(executable_memory.size());
     PushBytes(0x0F, 0x8A);
-    PushDWORD(0x00);
+    Push4Bytes(0x00);
 
     // ucomisd xmm0, QWORD PTR [rbp-0x11223344]
     PushBytes(0x66, 0x0F, 0x2E, 0x85);
-    PushDWORD(GetDisplacement(registers.top()));
+    Push4Bytes(GetDisplacement(registers.top()));
 
     registers.pop();
 
     // je
     jump_fixup_offsets.push(executable_memory.size());
     PushBytes(0x0F, 0x84);
-    PushDWORD(0x00);
+    Push4Bytes(0x00);
 
     e->GetIfStatement()->Accept(*this);
 
@@ -208,7 +208,7 @@ void X64Generator::Visit(FunctionDeclaration* e)
         // 0x85 is for xmm0 and the rest are across 8 bytes
         Byte floating_point_register = (Byte)(0x85 + (i * 8));
         PushBytes(0x66, 0x0F, 0xD6, floating_point_register);
-        PushDWORD(GetDisplacement(GetIdentifierRegister(name)));
+        Push4Bytes(GetDisplacement(GetIdentifierRegister(name)));
     }
 
     // the rest are pushed on the stack
