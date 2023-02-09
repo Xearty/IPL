@@ -28,6 +28,7 @@ void X64Generator::SetIdentifierRegister(const IPLString& name, int reg)
 
 void X64Generator::PushIdentifier(const IPLString& name)
 {
+    assert(identifier_to_register.find(name) == identifier_to_register.end());
     if (identifier_to_register.find(name) == identifier_to_register.end())
     {
         identifier_to_register[name] = GetNewRegister();
