@@ -30,29 +30,29 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -231,15 +231,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest.h" />
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-death-test.h" />
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-message.h" />
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-param-test.h" />
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-typed-test.h" />
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest_pred_impl.h" />
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-spi.h" />
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-death-test.h" />
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-printers.h" />
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-spi.h" />
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-test-part.h" />
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-typed-test.h" />
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest.h" />
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest_pred_impl.h" />
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest_prod.h" />
   </ItemGroup>
   <ItemGroup>

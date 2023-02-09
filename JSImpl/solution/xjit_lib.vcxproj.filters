@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="xjit">
+      <UniqueIdentifier>{E4ADA07C-D0E4-A10D-79D1-871065E71D0F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="xjit\src">
+      <UniqueIdentifier>{086B8117-F437-DC22-1D51-CACA097D11B1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="xjit\src\xjit">
+      <UniqueIdentifier>{C3FC89A1-2FBD-05D8-F8F7-4E5564774AB4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\xjit\src\xjit\jit.h">
+      <Filter>xjit\src\xjit</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xjit\src\xjit\jit_helpers.h">
+      <Filter>xjit\src\xjit</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\xjit\src\xjit\jit.cpp">
+      <Filter>xjit\src\xjit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xjit\src\xjit\jit_internal.cpp">
+      <Filter>xjit\src\xjit</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -9,19 +9,19 @@
     <ClCompile Include="..\test\ASTInterpreterTests.cpp">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="..\test\LexerTests.cpp">
+    <ClCompile Include="..\test\CodeGenerationTests.cpp">
       <Filter>test</Filter>
     </ClCompile>
-    <ClCompile Include="..\test\CodeGenerationTests.cpp">
+    <ClCompile Include="..\test\empty.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
+    <ClCompile Include="..\test\LexerTests.cpp">
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="..\test\ParserTests.cpp">
       <Filter>test</Filter>
     </ClCompile>
     <ClCompile Include="..\test\sprtTests.cpp">
-      <Filter>test</Filter>
-    </ClCompile>
-    <ClCompile Include="..\test\empty.cpp">
       <Filter>test</Filter>
     </ClCompile>
   </ItemGroup>

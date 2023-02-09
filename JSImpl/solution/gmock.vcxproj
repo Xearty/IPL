@@ -30,29 +30,29 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -231,17 +231,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-matchers.h" />
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-nice-strict.h" />
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-actions.h" />
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-cardinalities.h" />
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-more-matchers.h" />
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-actions.h" />
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-function-mockers.h" />
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-matchers.h" />
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-nice-strict.h" />
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-matchers.h" />
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-more-actions.h" />
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-more-matchers.h" />
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-spec-builders.h" />
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock.h" />
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-function-mockers.h" />
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-actions.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\test\googletest\googlemock\src\gmock-all.cc">

@@ -57,5 +57,8 @@ solution 'JSImpl'
     group 'Spasm'
         include '../../spasm/solution/'
 
+    group 'xjit'
+        include '../../xjit/solution/'
+
     group 'gctest'
         include '../../gctest/solution/'

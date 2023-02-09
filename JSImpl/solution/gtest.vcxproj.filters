@@ -21,7 +21,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest.h">
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-death-test.h">
       <Filter>test\googletest\googletest\include\gtest</Filter>
     </ClInclude>
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-message.h">
@@ -30,22 +30,22 @@
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-param-test.h">
       <Filter>test\googletest\googletest\include\gtest</Filter>
     </ClInclude>
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-typed-test.h">
-      <Filter>test\googletest\googletest\include\gtest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest_pred_impl.h">
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-printers.h">
       <Filter>test\googletest\googletest\include\gtest</Filter>
     </ClInclude>
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-spi.h">
       <Filter>test\googletest\googletest\include\gtest</Filter>
     </ClInclude>
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-death-test.h">
-      <Filter>test\googletest\googletest\include\gtest</Filter>
-    </ClInclude>
-    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-printers.h">
-      <Filter>test\googletest\googletest\include\gtest</Filter>
-    </ClInclude>
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-test-part.h">
+      <Filter>test\googletest\googletest\include\gtest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest-typed-test.h">
+      <Filter>test\googletest\googletest\include\gtest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest.h">
+      <Filter>test\googletest\googletest\include\gtest</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest_pred_impl.h">
       <Filter>test\googletest\googletest\include\gtest</Filter>
     </ClInclude>
     <ClInclude Include="..\test\googletest\googletest\include\gtest\gtest_prod.h">

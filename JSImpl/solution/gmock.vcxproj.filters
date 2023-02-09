@@ -21,37 +21,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-matchers.h">
-      <Filter>test\googletest\googlemock\include\gmock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-nice-strict.h">
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-actions.h">
       <Filter>test\googletest\googlemock\include\gmock</Filter>
     </ClInclude>
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-cardinalities.h">
       <Filter>test\googletest\googlemock\include\gmock</Filter>
     </ClInclude>
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-more-matchers.h">
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-actions.h">
       <Filter>test\googletest\googlemock\include\gmock</Filter>
     </ClInclude>
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-actions.h">
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-function-mockers.h">
       <Filter>test\googletest\googlemock\include\gmock</Filter>
     </ClInclude>
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-matchers.h">
       <Filter>test\googletest\googlemock\include\gmock</Filter>
     </ClInclude>
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-nice-strict.h">
+      <Filter>test\googletest\googlemock\include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-matchers.h">
+      <Filter>test\googletest\googlemock\include\gmock</Filter>
+    </ClInclude>
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-more-actions.h">
+      <Filter>test\googletest\googlemock\include\gmock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-more-matchers.h">
       <Filter>test\googletest\googlemock\include\gmock</Filter>
     </ClInclude>
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-spec-builders.h">
       <Filter>test\googletest\googlemock\include\gmock</Filter>
     </ClInclude>
     <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock.h">
-      <Filter>test\googletest\googlemock\include\gmock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-generated-function-mockers.h">
-      <Filter>test\googletest\googlemock\include\gmock</Filter>
-    </ClInclude>
-    <ClInclude Include="..\test\googletest\googlemock\include\gmock\gmock-actions.h">
       <Filter>test\googletest\googlemock\include\gmock</Filter>
     </ClInclude>
   </ItemGroup>

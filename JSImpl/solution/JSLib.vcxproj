@@ -30,29 +30,29 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
-    <DebugSymbols>true</DebugSymbols>
+    <PlatformToolset>v143</PlatformToolset>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -223,32 +223,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\ExpressionVisitor.h" />
-    <ClInclude Include="..\src\ExpressionsFwd.h" />
-    <ClInclude Include="..\src\ASTPrinter.h" />
     <ClInclude Include="..\src\ASTInterpreter.h" />
-    <ClInclude Include="..\src\ExpressionDefinitions.h" />
-    <ClInclude Include="..\src\Parser.h" />
+    <ClInclude Include="..\src\ASTPrinter.h" />
     <ClInclude Include="..\src\ByteCodeGenerator.h" />
-    <ClInclude Include="..\src\Expression.h" />
-    <ClInclude Include="..\src\Lexer.h" />
-    <ClInclude Include="..\src\JSONParser.h" />
     <ClInclude Include="..\src\CommonTypes.h" />
+    <ClInclude Include="..\src\Expression.h" />
+    <ClInclude Include="..\src\ExpressionDefinitions.h" />
+    <ClInclude Include="..\src\ExpressionsFwd.h" />
+    <ClInclude Include="..\src\ExpressionVisitor.h" />
+    <ClInclude Include="..\src\JSONParser.h" />
+    <ClInclude Include="..\src\Lexer.h" />
+    <ClInclude Include="..\src\Parser.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\ASTInterpreter.cpp">
+    </ClCompile>
+    <ClCompile Include="..\src\ASTPrinter.cpp">
+    </ClCompile>
     <ClCompile Include="..\src\ByteCodeGenerator.cpp">
     </ClCompile>
     <ClCompile Include="..\src\Expression.cpp">
     </ClCompile>
     <ClCompile Include="..\src\JSONParser.cpp">
     </ClCompile>
-    <ClCompile Include="..\src\Parser.cpp">
-    </ClCompile>
-    <ClCompile Include="..\src\ASTInterpreter.cpp">
-    </ClCompile>
-    <ClCompile Include="..\src\ASTPrinter.cpp">
-    </ClCompile>
     <ClCompile Include="..\src\Lexer.cpp">
+    </ClCompile>
+    <ClCompile Include="..\src\Parser.cpp">
     </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -12,22 +12,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\spasm\src\asm\bytecode.cpp">
-      <Filter>spasm\src\asm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\spasm\src\asm\symbol.cpp">
-      <Filter>spasm\src\asm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\spasm\src\asm\tokenizer.cpp">
-      <Filter>spasm\src\asm</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\spasm\src\asm\assembler.cpp">
+      <Filter>spasm\src\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\spasm\src\asm\bytecode.cpp">
       <Filter>spasm\src\asm</Filter>
     </ClCompile>
     <ClCompile Include="..\..\spasm\src\asm\lexer.cpp">
       <Filter>spasm\src\asm</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\spasm\src\asm\symbol.cpp">
+      <Filter>spasm\src\asm</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\spasm\src\asm\token.cpp">
+      <Filter>spasm\src\asm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\spasm\src\asm\tokenizer.cpp">
       <Filter>spasm\src\asm</Filter>
     </ClCompile>
   </ItemGroup>

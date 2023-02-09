@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="xjit">
+      <UniqueIdentifier>{E4ADA07C-D0E4-A10D-79D1-871065E71D0F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="xjit\src">
+      <UniqueIdentifier>{086B8117-F437-DC22-1D51-CACA097D11B1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\xjit\src\main.cpp">
+      <Filter>xjit\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

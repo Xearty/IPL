@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2022
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xjit", "xjit.vcxproj", "{E4ADA07C-D0E4-A10D-79D1-871065E71D0F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3AF18217-26BE-DD22-4FD7-CBCA3B0313B1} = {3AF18217-26BE-DD22-4FD7-CBCA3B0313B1}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xjit_lib", "xjit_lib.vcxproj", "{3AF18217-26BE-DD22-4FD7-CBCA3B0313B1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4ADA07C-D0E4-A10D-79D1-871065E71D0F}.Debug|x64.ActiveCfg = Debug|x64
+		{E4ADA07C-D0E4-A10D-79D1-871065E71D0F}.Debug|x64.Build.0 = Debug|x64
+		{E4ADA07C-D0E4-A10D-79D1-871065E71D0F}.Release|x64.ActiveCfg = Release|x64
+		{E4ADA07C-D0E4-A10D-79D1-871065E71D0F}.Release|x64.Build.0 = Release|x64
+		{3AF18217-26BE-DD22-4FD7-CBCA3B0313B1}.Debug|x64.ActiveCfg = Debug|x64
+		{3AF18217-26BE-DD22-4FD7-CBCA3B0313B1}.Debug|x64.Build.0 = Debug|x64
+		{3AF18217-26BE-DD22-4FD7-CBCA3B0313B1}.Release|x64.ActiveCfg = Release|x64
+		{3AF18217-26BE-DD22-4FD7-CBCA3B0313B1}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal
