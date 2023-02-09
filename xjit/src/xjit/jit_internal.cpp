@@ -70,7 +70,7 @@ void X64Generator::MovRegs(int to, int from)
 void X64Generator::MovRegAddress(int reg, const void* address)
 {
     // movabs rax, [absolute_address]
-    PushBytes(0x48, 0x48, 0xA1);
+    PushBytes(0x48, 0xA1);
     Push8Bytes((uint64_t)address);
 
     // movq [rbp - 8], rax
