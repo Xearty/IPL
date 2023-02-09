@@ -134,48 +134,12 @@ void X64Generator::Visit(IfStatement* e)
     // check if condition is true
     registers.push(GetNewRegister());
     e->GetCondition()->Accept(*this);
-
-    // pxor xmm0, xmm0
-    PushBytes(0x66, 0x0F, 0xEF, 0xC0);
-
-    // ucomisd xmm0, QWORD PTR [rbp-0x11223344]
-    PushBytes(0x66, 0x0F, 0x2E, 0x85);
-    Push4Bytes(GetDisplacement(registers.top()));
-
-    // check je and jp (equality and parity)
-    //jp
-    jump_fixup_offsets.push(executable_memory.size());
-    PushBytes(0x0F, 0x8A);
-    Push4Bytes(0x00);
-
-    // ucomisd xmm0, QWORD PTR [rbp-0x11223344]
-    PushBytes(0x66, 0x0F, 0x2E, 0x85);
-    Push4Bytes(GetDisplacement(registers.top()));
-
-    registers.pop();
-
-    // je
-    jump_fixup_offsets.push(executable_memory.size());
-    PushBytes(0x0F, 0x84);
-    Push4Bytes(0x00);
+    JumpIfCondition();
 
     e->GetIfStatement()->Accept(*this);
-
-    // else
-    // fix jump offsets
-    uintptr_t je_offset = jump_fixup_offsets.top();
-    Replace32BitsAtOffset(je_offset + 2, CalculateRelative32BitOffset(je_offset + 6, executable_memory.size()));
-    jump_fixup_offsets.pop();
+    PatchConditionalJump();
     
-    uintptr_t jp_offset = jump_fixup_offsets.top();
-    Replace32BitsAtOffset(jp_offset + 2, CalculateRelative32BitOffset(jp_offset + 6, executable_memory.size()));
-    jump_fixup_offsets.pop();
-
     e->GetElseStatement()->Accept(*this);
-
-    // if true, execute the first block and jump at end
-
-    // if false, jump to the else block if exists, if not, jump after the if
 }
 
 void X64Generator::Visit(ListExpression* e)

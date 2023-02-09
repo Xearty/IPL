@@ -97,3 +97,45 @@ void X64Generator::Replace32BitsAtOffset(uintptr_t offset, uint32_t dword)
         executable_memory[offset + i] = ((dword >> (i * 8)) & 0xFF);
     }
 }
+
+void X64Generator::JumpIfCondition()
+{
+    assert(!registers.empty());
+
+    // pxor xmm0, xmm0
+    PushBytes(0x66, 0x0F, 0xEF, 0xC0);
+
+    // ucomisd xmm0, QWORD PTR [rbp-0x11223344]
+    PushBytes(0x66, 0x0F, 0x2E, 0x85);
+    Push4Bytes(GetDisplacement(registers.top()));
+
+    // check je and jp (equality and parity)
+    //jp
+    jump_fixup_offsets.push(executable_memory.size());
+    PushBytes(0x0F, 0x8A);
+    Push4Bytes(0x00);
+
+    // ucomisd xmm0, QWORD PTR [rbp-0x11223344]
+    PushBytes(0x66, 0x0F, 0x2E, 0x85);
+    Push4Bytes(GetDisplacement(registers.top()));
+
+    // je
+    jump_fixup_offsets.push(executable_memory.size());
+    PushBytes(0x0F, 0x84);
+    Push4Bytes(0x00);
+
+    registers.pop();
+}
+
+void X64Generator::PatchConditionalJump()
+{
+    assert(jump_fixup_offsets.size() >= 2);
+
+    uintptr_t je_offset = jump_fixup_offsets.top();
+    Replace32BitsAtOffset(je_offset + 2, CalculateRelative32BitOffset(je_offset + 6, executable_memory.size()));
+    jump_fixup_offsets.pop();
+
+    uintptr_t jp_offset = jump_fixup_offsets.top();
+    Replace32BitsAtOffset(jp_offset + 2, CalculateRelative32BitOffset(jp_offset + 6, executable_memory.size()));
+    jump_fixup_offsets.pop();
+}
