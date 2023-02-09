@@ -56,12 +56,14 @@ private:
     void MovRegs(int to, int from);
     void MovRegAddress(int reg, const void* address);
     void MovRegNumber(int reg, double number);
+    void MovRegNumberRaw(int reg, uint64_t number);
 
-    void ReplaceDWORDAtOffset(uintptr_t offset, uint32_t dword);
+    void Replace32BitsAtOffset(uintptr_t offset, uint32_t dword);
 
     template <typename... Rest>
-    void PushBytes(Rest... rest) {
-        (executable_memory.push_back((Byte)rest), ...);
+    void PushBytes(Rest... rest)
+    {
+        (executable_memory.push_back(static_cast<Byte>(rest)), ...);
     }
 
     int GetNewRegister() { return next_register++; }
