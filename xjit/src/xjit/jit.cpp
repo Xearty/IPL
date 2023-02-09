@@ -131,7 +131,6 @@ void X64Generator::Visit(BlockStatement* e)
 
 void X64Generator::Visit(IfStatement* e)
 {
-    // check if condition is true
     registers.push(GetNewRegister());
     e->GetCondition()->Accept(*this);
     JumpIfCondition();
