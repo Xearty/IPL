@@ -3,7 +3,7 @@
 
 X64Generator::X64Generator()
 {
-    literal_addresses.reserve(1000);
+    literals.reserve(1000);
 }
 
 const Byte* X64Generator::CompileFunction(Expression* e)

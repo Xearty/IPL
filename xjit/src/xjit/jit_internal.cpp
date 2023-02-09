@@ -81,7 +81,7 @@ void X64Generator::MovRegAddress(int reg, const void* address)
 
 void X64Generator::MovRegNumber(int reg, double number)
 {
-    const auto pair = literal_addresses.insert(number);
+    const auto pair = literals.insert(number);
     const auto address = &*pair.first;
     MovRegAddress(reg, address);
 }

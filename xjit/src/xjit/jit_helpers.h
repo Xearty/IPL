@@ -5,7 +5,7 @@
 
 namespace
 {
-std::unordered_set<double> literal_addresses;
+std::unordered_set<double> literals;
 
 inline uint32_t GetDisplacement(int reg)
 {
