@@ -10,12 +10,12 @@
 int main()
 {
 	X64Generator x64Generator;
-	const char* source = "function hello(x) { return x; }";
+	const char* source = "function hello(a, b, c, d) { if (a > b) { return c; } else { return d; } }";
 	// const char* source = "function hello(arg1, arg2, arg3, arg4, arg5, arg6, arg7) { var x = 5; return x + arg1 + 2 * arg2 + 3 * arg3 + 4 * arg4 + arg5 + arg6 + arg7; }";
 	// const char* source = "function hello() { if (false) { return 100; } else { return 200; } }";
 	
 	const auto& tokens = Tokenize(source).tokens;
-	const auto AST = Parse(tokens); // AST is top statements
+	const auto AST = Parse(tokens);
 	auto& expr = static_cast<TopStatements*>(AST.get())->GetValues()[0];
 
 	PrintAST(expr, std::cout);
@@ -30,8 +30,8 @@ int main()
 	}
 	out.close();
 
-	using Function = double(*)(double);
+	using Function = double(*)(double, double, double, double);
 	Function func = (Function)executable_memory;
-	auto result = func(10.0);
+	auto result = func(2, 1, 100, 200);
 	std::cout << "\nResult: " << result << std::endl;
 }

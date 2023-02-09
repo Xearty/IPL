@@ -54,32 +54,27 @@ void X64Generator::Visit(BinaryExpression* e)
     PushBytes(0xF2, 0x0F, 0x10, 0x8D);
     Push4Bytes(GetDisplacement(second_reg));
 
-    switch (e->GetOperator())
+    const TokenType op = e->GetOperator();
+
+    if (OperationIsArithmetic(op))
     {
-        case TokenType::Plus:
-        {
-            // addsd  xmm0, xmm1
-            PushBytes(0xF2, 0x0F, 0x58, 0xC1);
+        PushBytes(0xF2, 0x0F, ArithmeticOperationToByte(op), 0xC1);
+    }
+    else if (OperationIsComparison(op))
+    {
+        // cmp*sd xmm0, xmm1
+        PushBytes(0xF2, 0x0F, 0xC2, 0xC1, ComparisonOperationToByte(op));
 
-        } break;
+        // So that we get 1 for true and 0 for false
+        const int one = GetNewRegister();
+        MovRegNumberRaw(one, DOUBLE_ONE);
 
-        case TokenType::Minus:
-        {
-            // subsd  xmm0, xmm1
-            PushBytes(0xF2, 0x0F, 0x5C, 0xC1);
-        } break;
+        // movsd  xmm1, QWORD PTR [rbp-0x10]
+        PushBytes(0xF2, 0x0F, 0x10, 0x8D);
+        Push4Bytes(GetDisplacement(one));
 
-        case TokenType::Star:
-        {
-            // mulsd  xmm0, xmm1
-            PushBytes(0xF2, 0x0F, 0x59, 0xC1);
-        } break;
-
-        case TokenType::Division:
-        {
-            // divsd  xmm0, xmm1
-            PushBytes(0xF2, 0x0F, 0x5E, 0xC1);
-        } break;
+        // pand  xmm0, xmm1
+        PushBytes(0x66, 0x0F, 0xDB, 0xC1);
     }
 
     // movq    QWORD PTR [rbp+0x0], xmm0
@@ -223,6 +218,7 @@ void X64Generator::Visit(FunctionDeclaration* e)
     e->GetBody()->Accept(*this);
 
     // fixup returns
+    // probably better to ret on return and not have to fix up offsets
     while (!return_fixup_offsets.empty())
     {
         const uintptr_t offset = return_fixup_offsets.top();
