@@ -85,7 +85,7 @@ void X64Generator::MovRegNumber(int reg, double number)
     MovRegAddress(reg, address);
 }
 
-void X64Generator::ReplaceDWORDAtOffset(uintptr_t offset, uint32_t dword)
+void X64Generator::Replace32BitsAtOffset(uintptr_t offset, uint32_t dword)
 {
     for (size_t i = 0; i < sizeof(dword); ++i)
     {
