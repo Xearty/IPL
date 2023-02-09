@@ -169,11 +169,11 @@ void X64Generator::Visit(IfStatement* e)
     // else
     // fix jump offsets
     uintptr_t je_offset = jump_fixup_offsets.top();
-    ReplaceDWORDAtOffset(je_offset + 2, CalculateRelative32BitOffset(je_offset + 6, executable_memory.size()));
+    Replace32BitsAtOffset(je_offset + 2, CalculateRelative32BitOffset(je_offset + 6, executable_memory.size()));
     jump_fixup_offsets.pop();
     
     uintptr_t jp_offset = jump_fixup_offsets.top();
-    ReplaceDWORDAtOffset(jp_offset + 2, CalculateRelative32BitOffset(jp_offset + 6, executable_memory.size()));
+    Replace32BitsAtOffset(jp_offset + 2, CalculateRelative32BitOffset(jp_offset + 6, executable_memory.size()));
     jump_fixup_offsets.pop();
 
     e->GetElseStatement()->Accept(*this);
@@ -226,7 +226,7 @@ void X64Generator::Visit(FunctionDeclaration* e)
     while (!return_fixup_offsets.empty())
     {
         const uintptr_t offset = return_fixup_offsets.top();
-        ReplaceDWORDAtOffset(offset + 1, CalculateRelative32BitOffset(offset + 5, executable_memory.size()));
+        Replace32BitsAtOffset(offset + 1, CalculateRelative32BitOffset(offset + 5, executable_memory.size()));
         return_fixup_offsets.pop();
     }
 
