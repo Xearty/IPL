@@ -102,8 +102,6 @@ void X64Generator::Visit(UnaryExpression* e)
             return_fixup_offsets.push(executable_memory.size());
             PushBytes(0xE9);
             Push4Bytes(0x00);
-
-            // need to jump and pop registers
         } break;
     }
 }
