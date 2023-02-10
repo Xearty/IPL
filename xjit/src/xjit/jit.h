@@ -31,7 +31,7 @@ public:
     // virtual void Visit(SwitchStatement* e) override { (void)e; }
     // virtual void Visit(CaseStatement* e) override { (void)e; }
     virtual void Visit(WhileStatement* e) override;
-    // virtual void Visit(ForStatement* e) override { (void)e; }
+    virtual void Visit(ForStatement* e) override;
     // virtual void Visit(Break* e) override { (void)e; }
     // virtual void Visit(Continue* e) override { (void)e; }
     virtual void Visit(FunctionDeclaration* e) override;

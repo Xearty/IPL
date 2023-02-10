@@ -147,12 +147,14 @@ void X64Generator::Visit(IfStatement* e)
     registers.push(GetNewRegister());
     e->GetCondition()->Accept(*this);
     JumpIfConditionIsFalse();
-
-    e->GetIfStatement()->Accept(*this);
-    BeginUnconditionalJumpForwards();
-    PatchConditionalJumpOffsets();
-    
-    e->GetElseStatement()->Accept(*this);
+    { // if
+        e->GetIfStatement()->Accept(*this);
+        BeginUnconditionalJumpForwards();
+    }
+    { // else
+        PatchConditionalJumpOffsets();
+        e->GetElseStatement()->Accept(*this);
+    }
     EndUnconditionalJumpForwards();
 }
 
@@ -162,10 +164,25 @@ void X64Generator::Visit(WhileStatement* e)
     registers.push(GetNewRegister());
     e->GetCondition()->Accept(*this);
     JumpIfConditionIsFalse();
+    {
+        e->GetBody()->Accept(*this);
+        EndUnconditionalJumpBackwards();
+    }
+    PatchConditionalJumpOffsets();
+}
 
-    e->GetBody()->Accept(*this);
-
-    EndUnconditionalJumpBackwards();
+void X64Generator::Visit(ForStatement* e)
+{
+    registers.push(GetNewRegister());
+    e->GetInitialization()->Accept(*this);
+    BeginUnconditionalJumpBackwards();
+    e->GetCondition()->Accept(*this);
+    JumpIfConditionIsFalse();
+    {
+        e->GetBody()->Accept(*this);
+        e->GetIteration()->Accept(*this);
+        EndUnconditionalJumpBackwards();
+    }
     PatchConditionalJumpOffsets();
 }
 
