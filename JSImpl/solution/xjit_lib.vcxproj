@@ -239,6 +239,8 @@
     </ClCompile>
     <ClCompile Include="..\..\xjit\src\xjit\jit_internal.cpp">
     </ClCompile>
+    <ClCompile Include="..\..\xjit\src\xjit\jit_win32.cpp">
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="JSLib.vcxproj">

@@ -26,5 +26,8 @@
     <ClCompile Include="..\..\xjit\src\xjit\jit_internal.cpp">
       <Filter>xjit\src\xjit</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\xjit\src\xjit\jit_win32.cpp">
+      <Filter>xjit\src\xjit</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
