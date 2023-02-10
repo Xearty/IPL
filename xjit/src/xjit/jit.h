@@ -14,7 +14,7 @@ public:
     ~X64Generator() {}
 
     virtual void Visit(LiteralNull* e) override;
-    // virtual void Visit(LiteralUndefined* e) override { (void)e; }
+    virtual void Visit(LiteralUndefined* e) override;
     // virtual void Visit(LiteralString* e) override { (void)e; }
     virtual void Visit(LiteralNumber* e) override;
     virtual void Visit(LiteralBoolean* e) override;
