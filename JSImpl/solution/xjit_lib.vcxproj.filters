@@ -18,12 +18,18 @@
     <ClInclude Include="..\..\xjit\src\xjit\jit_helpers.h">
       <Filter>xjit\src\xjit</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\xjit\src\xjit\jit_runtime.h">
+      <Filter>xjit\src\xjit</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\xjit\src\xjit\jit.cpp">
       <Filter>xjit\src\xjit</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xjit\src\xjit\jit_internal.cpp">
+      <Filter>xjit\src\xjit</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xjit\src\xjit\jit_runtime.cpp">
       <Filter>xjit\src\xjit</Filter>
     </ClCompile>
     <ClCompile Include="..\..\xjit\src\xjit\jit_win32.cpp">

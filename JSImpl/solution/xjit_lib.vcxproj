@@ -233,11 +233,14 @@
   <ItemGroup>
     <ClInclude Include="..\..\xjit\src\xjit\jit.h" />
     <ClInclude Include="..\..\xjit\src\xjit\jit_helpers.h" />
+    <ClInclude Include="..\..\xjit\src\xjit\jit_runtime.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\xjit\src\xjit\jit.cpp">
     </ClCompile>
     <ClCompile Include="..\..\xjit\src\xjit\jit_internal.cpp">
+    </ClCompile>
+    <ClCompile Include="..\..\xjit\src\xjit\jit_runtime.cpp">
     </ClCompile>
     <ClCompile Include="..\..\xjit\src\xjit\jit_win32.cpp">
     </ClCompile>
