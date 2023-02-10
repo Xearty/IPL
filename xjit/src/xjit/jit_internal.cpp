@@ -128,7 +128,7 @@ void X64Generator::JumpIfCondition()
     registers.pop();
 }
 
-void X64Generator::PatchConditionalJump()
+void X64Generator::PatchConditionalJumpOffsets()
 {
     assert(jump_fixup_offsets.size() >= 2);
 

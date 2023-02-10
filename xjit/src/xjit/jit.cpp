@@ -149,7 +149,7 @@ void X64Generator::Visit(IfStatement* e)
     JumpIfCondition();
 
     e->GetIfStatement()->Accept(*this);
-    PatchConditionalJump();
+    PatchConditionalJumpOffsets();
     
     e->GetElseStatement()->Accept(*this);
 }

@@ -61,7 +61,7 @@ private:
     void Replace32BitsAtOffset(uintptr_t offset, uint32_t dword);
 
     void JumpIfCondition();
-    void PatchConditionalJump();
+    void PatchConditionalJumpOffsets();
 
     template <typename... Rest>
     void PushBytes(Rest... rest)
