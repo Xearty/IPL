@@ -10,10 +10,15 @@
 int main()
 {
 	X64Generator x64Generator;
-	const char* source = "function hello(a, b, c, d) { if (a > b) { return c; } else { return d; } }";
+	// const char* source = "function hello(a, b, c, d) { if (a > b) { return c; } else { return d; } }";
 	// const char* source = "function hello(arg1, arg2, arg3, arg4, arg5, arg6, arg7) { var x = 5; return x + arg1 + 2 * arg2 + 3 * arg3 + 4 * arg4 + arg5 + arg6 + arg7; }";
 	// const char* source = "function hello() { if (false) { return 100; } else { return 200; } }";
 	
+	// crashes on destruction
+	const char* source = "function hello() { var x = 1; x = 2; return x; }";
+
+	// const char* source = "function hello() { var x = 1; x = 2; x = 3; }";
+
 	const auto& tokens = Tokenize(source).tokens;
 	const auto AST = Parse(tokens);
 	auto& expr = static_cast<TopStatements*>(AST.get())->GetValues()[0];

@@ -35,10 +35,10 @@ void X64Generator::Visit(Call* e)
 
 void X64Generator::Visit(BinaryExpression* e)
 {
-    registers.push(GetNewRegister());
+    registers.push(GetRegisterForExpression(e->GetLeft().get()));
     e->GetLeft()->Accept(*this);
 
-    registers.push(GetNewRegister());
+    registers.push(GetRegisterForExpression(e->GetRight().get()));
     e->GetRight()->Accept(*this);
 
     auto second_reg = registers.top();
@@ -75,6 +75,21 @@ void X64Generator::Visit(BinaryExpression* e)
 
         // pand  xmm0, xmm1
         PushBytes(0x66, 0x0F, 0xDB, 0xC1);
+    }
+    else
+    {
+        switch (op)
+        {
+            case TokenType::Equal:
+            {
+                // movsd QWORD PTR [rbp-0x11223344], xmm1
+                PushBytes(0xF2, 0x0F, 0x11, 0x8D);
+                Push4Bytes(GetDisplacement(first_reg));
+
+                // movsd  xmm0, xmm1
+                PushBytes(0xF2, 0x0F, 0x10, 0xC1);
+            } break;
+        }
     }
 
     // movq    QWORD PTR [rbp+0x0], xmm0
@@ -196,6 +211,8 @@ void X64Generator::Visit(TopStatements* e)
 {
     for (auto& statement : e->GetValues())
     {
+        registers.push(GetNewRegister());
         statement->Accept(*this);
+        registers.pop();
     }
 }

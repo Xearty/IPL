@@ -70,6 +70,7 @@ private:
     }
 
     int GetNewRegister() { return next_register++; }
+    int GetRegisterForExpression(Expression* e);
 
 private:
     int next_register = 1;

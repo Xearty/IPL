@@ -140,3 +140,19 @@ void X64Generator::PatchConditionalJump()
     Replace32BitsAtOffset(jp_offset + 2, CalculateRelative32BitOffset(jp_offset + 6, executable_memory.size()));
     jump_fixup_offsets.pop();
 }
+
+int X64Generator::GetRegisterForExpression(Expression* e)
+{
+    // @TODO: Think of something more clever
+    if (const auto identifier = dynamic_cast<IdentifierExpression*>(e))
+    {
+        return identifier_to_register.at(identifier->GetName());
+    }
+
+    if (const auto call = dynamic_cast<Call*>(e))
+    {
+        return GetRegisterForExpression(call->GetObjectOrCall().get());
+    }
+
+    return GetNewRegister();
+}
