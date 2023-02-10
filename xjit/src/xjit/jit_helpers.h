@@ -1,14 +1,11 @@
 #pragma once
 
 #include "jit.h"
-#include <unordered_set>
 
 #define DOUBLE_ONE 0x3ff0000000000000
 
 namespace
 {
-std::unordered_set<double> literals;
-
 inline uint32_t GetDisplacement(int reg)
 {
     return -(reg * (int)sizeof(double));

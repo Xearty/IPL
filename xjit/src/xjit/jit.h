@@ -1,9 +1,7 @@
 #pragma once
 
 #include <Expression.h>
-#include <spasm.hpp>
-#include <memory>
-#include <stdarg.h>
+#include <unordered_set>
 
 using Byte = uint8_t;
 
@@ -43,7 +41,12 @@ public:
     // virtual void Visit(MemberAccess* e) override { (void)e; }
 
 private:
+    // platform specific
     const Byte* GetExecutableMemory() const;
+
+    void InitializeRuntime();
+    // Using the bitwise or operator to invoke a funciton from the runtime
+    void InvokeFunction(BinaryExpression* e);
 
     void PushIdentifier(const IPLString& name);
     int GetIdentifierRegister(const IPLString& name);
@@ -85,4 +88,5 @@ private:
     IPLStack<uintptr_t> return_fixup_offsets; // contains the jump offsets for return statements
     IPLStack<int> registers;
     IPLUnorderedMap<IPLString, int> identifier_to_register;
+    std::unordered_set<double> literals;
 };

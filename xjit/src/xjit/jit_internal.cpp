@@ -1,4 +1,5 @@
 #include "jit.h"
+#include "jit_runtime.h"
 #include "jit_helpers.h"
 
 void X64Generator::SetIdentifierRegister(const IPLString& name, int reg)
@@ -152,6 +153,7 @@ int X64Generator::GetRegisterForExpression(Expression* e)
     // @TODO: Think of something more clever
     if (const auto identifier = dynamic_cast<IdentifierExpression*>(e))
     {
+        assert(identifier_to_register.find(identifier->GetName()) != identifier_to_register.end());
         return identifier_to_register.at(identifier->GetName());
     }
 

@@ -1,9 +1,10 @@
 #include "jit.h"
 #include "jit_helpers.h"
+#include "jit_runtime.h"
 
 X64Generator::X64Generator()
 {
-    literals.reserve(1000);
+    InitializeRuntime();
 }
 
 const Byte* X64Generator::CompileFunction(Expression* e)
@@ -47,6 +48,14 @@ void X64Generator::Visit(Call* e)
 
 void X64Generator::Visit(BinaryExpression* e)
 {
+    // The AST doesn't maintain function invokation info,
+    // so I am using the bitwise or as a workaround
+    if (e->GetOperator() == TokenType::BitwiseOr)
+    {
+        InvokeFunction(e);
+        return;
+    }
+
     registers.push(GetRegisterForExpression(e->GetLeft().get()));
     e->GetLeft()->Accept(*this);
 
@@ -159,11 +168,11 @@ void X64Generator::Visit(IfStatement* e)
     registers.push(GetNewRegister());
     e->GetCondition()->Accept(*this);
     JumpIfConditionIsFalse();
-    { // if
+    {
         e->GetIfStatement()->Accept(*this);
         BeginUnconditionalJumpForwards();
     }
-    { // else
+    {
         PatchConditionalJumpOffsets();
         e->GetElseStatement()->Accept(*this);
     }
@@ -212,6 +221,12 @@ void X64Generator::Visit(FunctionDeclaration* e)
     // mov     rbp, rsp
     PushBytes(0x55, 0x48, 0x89, 0xE5);
 
+    // sub rsp
+    PushBytes(0x48, 0x81, 0xEC);
+    Push4Bytes(0x00);
+
+    uintptr_t rsp_sub_offset = executable_memory.size() - 4;
+
     // arguments (all doubles)
     const auto& args = e->GetArgumentsIdentifiers();
 
@@ -245,6 +260,16 @@ void X64Generator::Visit(FunctionDeclaration* e)
         Replace32BitsAtOffset(offset + 1, CalculateRelative32BitOffset(offset + 5, executable_memory.size()));
         return_fixup_offsets.pop();
     }
+
+    bool should_pad = next_register % 2 == 1; // to preserve 16-bit alignment
+    Replace32BitsAtOffset(rsp_sub_offset, next_register * 8 + should_pad * 8);
+
+    // add     rsp, 0x11223344
+    PushBytes(0x48, 0x81, 0xC4);
+    Push4Bytes(next_register * 8);
+
+    // mov rsp, rbp
+    PushBytes(0x48, 0x89, 0xEC);
 
     // pop  rbp
     // ret
