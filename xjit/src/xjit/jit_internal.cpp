@@ -79,7 +79,7 @@ void X64Generator::Replace32BitsAtOffset(uintptr_t offset, uint32_t dword)
     }
 }
 
-void X64Generator::JumpIfCondition()
+void X64Generator::JumpIfConditionIsFalse()
 {
     assert(!registers.empty());
 
@@ -119,6 +119,32 @@ void X64Generator::PatchConditionalJumpOffsets()
     uintptr_t jp_offset = jump_fixup_offsets.top();
     Replace32BitsAtOffset(jp_offset + 2, CalculateRelative32BitOffset(jp_offset + 6, executable_memory.size()));
     jump_fixup_offsets.pop();
+}
+
+void X64Generator::BeginUnconditionalJumpForwards()
+{
+    unconditional_jump_fixup_offsets.push(executable_memory.size());
+    PushBytes(0xE9);
+    Push4Bytes(0x00);
+}
+
+void X64Generator::EndUnconditionalJumpForwards()
+{
+    uintptr_t offset = unconditional_jump_fixup_offsets.top();
+    Replace32BitsAtOffset(offset + 1, CalculateRelative32BitOffset(offset + 5, executable_memory.size()));
+    unconditional_jump_fixup_offsets.pop();
+}
+
+void X64Generator::BeginUnconditionalJumpBackwards()
+{
+    unconditional_jump_fixup_offsets.push(executable_memory.size());
+}
+
+void X64Generator::EndUnconditionalJumpBackwards()
+{
+    PushBytes(0xE9);
+    Push4Bytes(CalculateRelative32BitOffset(executable_memory.size() + 4, unconditional_jump_fixup_offsets.top()));
+    unconditional_jump_fixup_offsets.pop();
 }
 
 int X64Generator::GetRegisterForExpression(Expression* e)

@@ -30,7 +30,7 @@ public:
     virtual void Visit(IfStatement* e) override;
     // virtual void Visit(SwitchStatement* e) override { (void)e; }
     // virtual void Visit(CaseStatement* e) override { (void)e; }
-    // virtual void Visit(WhileStatement* e) override { (void)e; }
+    virtual void Visit(WhileStatement* e) override;
     // virtual void Visit(ForStatement* e) override { (void)e; }
     // virtual void Visit(Break* e) override { (void)e; }
     // virtual void Visit(Continue* e) override { (void)e; }
@@ -60,8 +60,17 @@ private:
 
     void Replace32BitsAtOffset(uintptr_t offset, uint32_t dword);
 
-    void JumpIfCondition();
+    void JumpIfConditionIsFalse();
     void PatchConditionalJumpOffsets();
+
+    void BeginUnconditionalJumpForwards();
+    void EndUnconditionalJumpForwards();
+
+    void BeginUnconditionalJumpBackwards();
+    void EndUnconditionalJumpBackwards();
+
+    void UnconditionalJumpBackwards();
+    void PatchUnconditionalJumpOffset();
 
     template <typename... Rest>
     void PushBytes(Rest... rest)
@@ -75,6 +84,7 @@ private:
 private:
     int next_register = 1;
     IPLVector<Byte> executable_memory;
+    IPLStack<uintptr_t> unconditional_jump_fixup_offsets;
     IPLStack<uintptr_t> jump_fixup_offsets; // contains jump offsets for if, switch and loops
     IPLStack<uintptr_t> return_fixup_offsets; // contains the jump offsets for return statements
     IPLStack<int> registers;
