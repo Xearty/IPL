@@ -69,9 +69,6 @@ private:
     void BeginUnconditionalJumpBackwards();
     void EndUnconditionalJumpBackwards();
 
-    void UnconditionalJumpBackwards();
-    void PatchUnconditionalJumpOffset();
-
     template <typename... Rest>
     void PushBytes(Rest... rest)
     {
