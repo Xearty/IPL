@@ -11,7 +11,9 @@ class X64Generator : public ExpressionVisitor
 {
 public:
     X64Generator();
-    ~X64Generator() {}
+
+    const Byte* CompileFunction(Expression* e);
+    const IPLVector<Byte>& GetMachineCode() const { return executable_memory; }
 
     virtual void Visit(LiteralNull* e) override;
     virtual void Visit(LiteralUndefined* e) override;
@@ -39,9 +41,6 @@ public:
     // virtual void Visit(EmptyExpression* e) override { (void)e; }
     virtual void Visit(Call* e) override;
     // virtual void Visit(MemberAccess* e) override { (void)e; }
-
-    const IPLVector<Byte>& GetMachineCode() const { return executable_memory; }
-    const Byte* CompileFunction(Expression* e);
 
 private:
     const Byte* GetExecutableMemory() const;
