@@ -2,6 +2,18 @@
 #include "jit_runtime.h"
 #include "jit_helpers.h"
 
+void X64Generator::ResetState()
+{
+    next_register = 1;
+    IPLVector<Byte>().swap(executable_memory);
+    IPLStack<uintptr_t>().swap(unconditional_jump_fixup_offsets);
+    IPLStack<uintptr_t>().swap(jump_fixup_offsets);
+    IPLStack<uintptr_t>().swap(return_fixup_offsets);
+    IPLStack<int>().swap(registers);
+    IPLUnorderedMap<IPLString, int>().swap(identifier_to_register);
+    std::unordered_set<double>().swap(literals);
+}
+
 void X64Generator::SetIdentifierRegister(const IPLString& name, int reg)
 {
     identifier_to_register[name] = reg;

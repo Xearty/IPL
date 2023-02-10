@@ -44,6 +44,8 @@ private:
     // platform specific
     const Byte* GetExecutableMemory() const;
 
+    void ResetState();
+
     void InitializeRuntime();
     // Using the bitwise or operator to invoke a funciton from the runtime
     void InvokeFunction(BinaryExpression* e);
@@ -81,7 +83,7 @@ private:
     int GetRegisterForExpression(Expression* e);
 
 private:
-    int next_register = 1;
+    int next_register;
     IPLVector<Byte> executable_memory;
     IPLStack<uintptr_t> unconditional_jump_fixup_offsets;
     IPLStack<uintptr_t> jump_fixup_offsets; // contains jump offsets for if, switch and loops

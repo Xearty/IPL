@@ -9,7 +9,7 @@ X64Generator::X64Generator()
 
 const Byte* X64Generator::CompileFunction(Expression* e)
 {
-    next_register = 1;
+    ResetState();
     e->Accept(*this);
     return GetExecutableMemory();
 }
