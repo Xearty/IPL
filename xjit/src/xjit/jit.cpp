@@ -13,6 +13,12 @@ const Byte* X64Generator::CompileFunction(Expression* e)
     return GetExecutableMemory();
 }
 
+void X64Generator::Visit(LiteralNull* e)
+{
+    (void)e;
+    MovRegNumber(registers.top(), 0);
+}
+
 void X64Generator::Visit(LiteralNumber* e)
 {
     MovRegNumber(registers.top(), e->GetValue());
