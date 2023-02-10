@@ -53,9 +53,9 @@ void X64Generator::Visit(BinaryExpression* e)
     registers.push(GetRegisterForExpression(e->GetRight().get()));
     e->GetRight()->Accept(*this);
 
-    auto second_reg = registers.top();
+    const auto second_reg = registers.top();
     registers.pop();
-    auto first_reg = registers.top();
+    const auto first_reg = registers.top();
     registers.pop();
 
     // movsd  xmm0, QWORD PTR[rbp - 0x8]
@@ -148,7 +148,7 @@ void X64Generator::Visit(VariableDefinitionExpression* e)
 
 void X64Generator::Visit(BlockStatement* e)
 {
-    for (auto& expr : e->GetValues())
+    for (const auto& expr : e->GetValues())
     {
         expr->Accept(*this);
     }
@@ -200,7 +200,7 @@ void X64Generator::Visit(ForStatement* e)
 
 void X64Generator::Visit(ListExpression* e)
 {
-    for (auto& expr : e->GetValues())
+    for (const auto& expr : e->GetValues())
     {
         expr->Accept(*this);
     }
@@ -253,7 +253,7 @@ void X64Generator::Visit(FunctionDeclaration* e)
 
 void X64Generator::Visit(TopStatements* e)
 {
-    for (auto& statement : e->GetValues())
+    for (const auto& statement : e->GetValues())
     {
         registers.push(GetNewRegister());
         statement->Accept(*this);
