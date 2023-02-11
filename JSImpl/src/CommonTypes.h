@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include <memory>
 #include <stack>
 #include <cassert>
@@ -18,6 +19,9 @@ using IPLStack = std::stack<T>;
 
 template <typename Key, typename T>
 using IPLUnorderedMap = std::unordered_map<Key, T>;
+
+template <typename T>
+using IPLUnorderedSet = std::unordered_set<T>;
 
 template <typename T>
 using IPLSharedPtr = std::shared_ptr<T>;
