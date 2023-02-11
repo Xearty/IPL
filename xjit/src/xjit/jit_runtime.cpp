@@ -2,11 +2,13 @@
 #include "jit_helpers.h"
 #include <iostream>
 
+std::ostream* output_stream = &std::cout;
+
 namespace
 {
 void Print(double arg)
 {
-	std::cout << arg << std::endl;
+	*output_stream << arg << std::endl;
 }
 }
 
