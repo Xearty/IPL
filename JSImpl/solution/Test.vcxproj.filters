@@ -15,6 +15,9 @@
     <ClCompile Include="..\test\empty.cpp">
       <Filter>test</Filter>
     </ClCompile>
+    <ClCompile Include="..\test\JitTests.cpp">
+      <Filter>test</Filter>
+    </ClCompile>
     <ClCompile Include="..\test\LexerTests.cpp">
       <Filter>test</Filter>
     </ClCompile>
