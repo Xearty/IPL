@@ -210,13 +210,26 @@ void X64Generator::CloseBreakScope(uintptr_t to_jump_offset)
     m_BreakScopes.pop();
 }
 
+void X64Generator::NormalizeBoolean()
+{
+    const int one = GetNewRegister();
+    MovRegNumberRaw(one, DOUBLE_ONE);
+
+    // movsd  xmm1, QWORD PTR [rbp-0x10]
+    PushBytes(0xF2, 0x0F, 0x10, 0x8D);
+    Push4Bytes(GetDisplacement(one));
+
+    // pand  xmm0, xmm1
+    PushBytes(0x66, 0x0F, 0xDB, 0xC1);
+}
+
 int X64Generator::GetRegisterForExpression(Expression* e)
 {
     // @TODO: Think of something more clever
     if (const auto identifier = dynamic_cast<IdentifierExpression*>(e))
     {
         assert(m_IdentifierToRegisterMapping.find(identifier->GetName()) != m_IdentifierToRegisterMapping.end());
-        return m_IdentifierToRegisterMapping.at(identifier->GetName());
+        return GetIdentifierRegister(identifier->GetName());
     }
 
     if (const auto call = dynamic_cast<Call*>(e))

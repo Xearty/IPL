@@ -58,4 +58,20 @@ inline Byte ArithmeticOperationToByte(TokenType token)
     return 0;
 }
 
+inline bool OperationIsLogical(TokenType token)
+{
+    return token == TokenType::LogicalAnd || token == TokenType::LogicalOr;
+}
+
+inline Byte LogicalOperationToByte(TokenType token)
+{
+    switch (token)
+    {
+        case TokenType::LogicalAnd: return 0xDB;
+        case TokenType::LogicalOr: return 0xEB;
+    }
+    NOT_IMPLEMENTED;
+    return 0;
+}
+
 }

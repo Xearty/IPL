@@ -85,17 +85,13 @@ void X64Generator::Visit(BinaryExpression* e)
     {
         // cmp*sd xmm0, xmm1
         PushBytes(0xF2, 0x0F, 0xC2, 0xC1, ComparisonOperationToByte(op));
-
-        // So that we get 1 for true and 0 for false
-        const int one = GetNewRegister();
-        MovRegNumberRaw(one, DOUBLE_ONE);
-
-        // movsd  xmm1, QWORD PTR [rbp-0x10]
-        PushBytes(0xF2, 0x0F, 0x10, 0x8D);
-        Push4Bytes(GetDisplacement(one));
-
-        // pand  xmm0, xmm1
-        PushBytes(0x66, 0x0F, 0xDB, 0xC1);
+        NormalizeBoolean();
+    }
+    else if (OperationIsLogical(op))
+    {
+        // p(logical op) xmm0, xmm1
+        PushBytes(0x66, 0x0F, LogicalOperationToByte(op), 0xC1);
+        NormalizeBoolean();
     }
     else
     {

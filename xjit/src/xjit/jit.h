@@ -50,6 +50,9 @@ private:
     // Using the bitwise or operator to invoke a funciton from the runtime
     void InvokeFunction(BinaryExpression* e);
 
+    // value in xmm0 becomes double 1 if non-zero
+    void NormalizeBoolean();
+
     void PushIdentifier(const IPLString& name);
     int GetIdentifierRegister(const IPLString& name);
     void SetIdentifierRegister(const IPLString& name, int reg);
