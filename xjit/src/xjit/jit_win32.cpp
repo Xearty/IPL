@@ -12,7 +12,7 @@ const Byte* X64Generator::GetExecutableMemory() const
     Byte* buffer = (Byte*)VirtualAlloc(NULL, page_size, MEM_COMMIT, PAGE_READWRITE);
     if (buffer)
     {
-        memcpy(buffer, executable_memory.data(), executable_memory.size());
+        memcpy(buffer, m_Code.data(), m_Code.size());
         DWORD old_protection;
         VirtualProtect(buffer, page_size, PAGE_EXECUTE_READ, &old_protection);
     }

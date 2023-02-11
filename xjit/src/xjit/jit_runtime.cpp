@@ -23,7 +23,6 @@ bool IdentifierIsFunction(const IPLString& name)
 
 void X64Generator::InitializeRuntime()
 {
-	literals.reserve(1000);
 	runtime.emplace("print", Print);
 }
 
@@ -40,13 +39,13 @@ void X64Generator::InvokeFunction(BinaryExpression* e)
 		return;
 	}
 
-	registers.push(GetRegisterForExpression(right));
+	m_RegisterStack.push(GetRegisterForExpression(right));
 	right->Accept(*this);
 
 	// movsd xmm0, QWORD PTR [rbp-0x11223344]
 	PushBytes(0xF2, 0x0F, 0x10, 0x85);
-	Push4Bytes(GetDisplacement(registers.top()));
-	registers.pop();
+	Push4Bytes(GetDisplacement(m_RegisterStack.top()));
+	m_RegisterStack.pop();
 
 	RuntimeFunction function_address = runtime.at(identifier->GetName());
 

@@ -17,28 +17,28 @@ const Byte* X64Generator::CompileFunction(Expression* e)
 void X64Generator::Visit(LiteralUndefined* e)
 {
     (void)e;
-    MovRegNumber(registers.top(), 0);
+    MovRegNumber(m_RegisterStack.top(), 0);
 }
 
 void X64Generator::Visit(LiteralNull* e)
 {
     (void)e;
-    MovRegNumber(registers.top(), 0);
+    MovRegNumber(m_RegisterStack.top(), 0);
 }
 
 void X64Generator::Visit(LiteralNumber* e)
 {
-    MovRegNumber(registers.top(), e->GetValue());
+    MovRegNumber(m_RegisterStack.top(), e->GetValue());
 }
 
 void X64Generator::Visit(LiteralBoolean* e)
 {
-    MovRegNumber(registers.top(), e->GetValue());
+    MovRegNumber(m_RegisterStack.top(), e->GetValue());
 }
 
 void X64Generator::Visit(IdentifierExpression* e)
 {
-    MovRegs(registers.top(), GetIdentifierRegister(e->GetName()));
+    MovRegs(m_RegisterStack.top(), GetIdentifierRegister(e->GetName()));
 }
 
 void X64Generator::Visit(Call* e)
@@ -56,16 +56,16 @@ void X64Generator::Visit(BinaryExpression* e)
         return;
     }
 
-    registers.push(GetRegisterForExpression(e->GetLeft().get()));
+    m_RegisterStack.push(GetRegisterForExpression(e->GetLeft().get()));
     e->GetLeft()->Accept(*this);
 
-    registers.push(GetRegisterForExpression(e->GetRight().get()));
+    m_RegisterStack.push(GetRegisterForExpression(e->GetRight().get()));
     e->GetRight()->Accept(*this);
 
-    const auto second_reg = registers.top();
-    registers.pop();
-    const auto first_reg = registers.top();
-    registers.pop();
+    const auto second_reg = m_RegisterStack.top();
+    m_RegisterStack.pop();
+    const auto first_reg = m_RegisterStack.top();
+    m_RegisterStack.pop();
 
     // movsd  xmm0, QWORD PTR[rbp - 0x8]
     PushBytes(0xF2, 0x0F, 0x10, 0x85);
@@ -115,7 +115,7 @@ void X64Generator::Visit(BinaryExpression* e)
 
     // movq    QWORD PTR [rbp+0x0], xmm0
     PushBytes(0x66, 0x0F, 0xD6, 0x85);
-    Push4Bytes(GetDisplacement(registers.top()));
+    Push4Bytes(GetDisplacement(m_RegisterStack.top()));
 }
 
 void X64Generator::Visit(UnaryExpression* e)
@@ -125,17 +125,17 @@ void X64Generator::Visit(UnaryExpression* e)
         // @TODO: don't emit jump if already at the end
         case TokenType::Return:
         {
-            registers.push(GetNewRegister());
+            m_RegisterStack.push(GetNewRegister());
             e->GetExpr()->Accept(*this);
 
             // movsd xmm0, QWORD PTR [bsp-0x00]
             PushBytes(0xF2, 0x0F, 0x10, 0x85);
-            Push4Bytes(GetDisplacement(registers.top()));
+            Push4Bytes(GetDisplacement(m_RegisterStack.top()));
 
-            registers.pop();
+            m_RegisterStack.pop();
 
             // jmp to end of function
-            return_fixup_offsets.push(executable_memory.size());
+            m_ReturnFixupOffsets.push(m_Code.size());
             PushBytes(0xE9);
             Push4Bytes(0x00);
         } break;
@@ -146,13 +146,13 @@ void X64Generator::Visit(VariableDefinitionExpression* e)
 {
     PushIdentifier(e->GetName());
     
-    registers.push(GetNewRegister());
+    m_RegisterStack.push(GetNewRegister());
     e->GetValue()->Accept(*this);
 
     const auto variable_reg = GetIdentifierRegister(e->GetName());
-    const auto value_reg = registers.top();
+    const auto value_reg = m_RegisterStack.top();
     MovRegs(variable_reg, value_reg);
-    registers.pop();
+    m_RegisterStack.pop();
 }
 
 void X64Generator::Visit(BlockStatement* e)
@@ -165,7 +165,7 @@ void X64Generator::Visit(BlockStatement* e)
 
 void X64Generator::Visit(IfStatement* e)
 {
-    registers.push(GetNewRegister());
+    m_RegisterStack.push(GetNewRegister());
     e->GetCondition()->Accept(*this);
 
     JumpIfConditionIsFalse();
@@ -173,7 +173,7 @@ void X64Generator::Visit(IfStatement* e)
         e->GetIfStatement()->Accept(*this);
         if (e->GetElseStatement())
         {
-            BeginUnconditionalJumpForwards();
+            BeginUnconditionalJumpForward();
         }
     }
     PatchConditionalJumpOffsets();
@@ -181,36 +181,71 @@ void X64Generator::Visit(IfStatement* e)
     if (e->GetElseStatement())
     {
         e->GetElseStatement()->Accept(*this);
-        EndUnconditionalJumpForwards();
+        EndUnconditionalJumpForward();
     }
 }
 
 void X64Generator::Visit(WhileStatement* e)
 {
-    BeginUnconditionalJumpBackwards();
-    registers.push(GetNewRegister());
+    OpenBreakScope();
+    OpenContinueScope();
+
+    uintptr_t before_loop_offset = m_Code.size();
+
+    BeginUnconditionalJumpBackward();
+    m_RegisterStack.push(GetNewRegister());
     e->GetCondition()->Accept(*this);
     JumpIfConditionIsFalse();
     {
         e->GetBody()->Accept(*this);
-        EndUnconditionalJumpBackwards();
+        EndUnconditionalJumpBackward();
     }
     PatchConditionalJumpOffsets();
+
+    CloseContinueScope(before_loop_offset);
+    CloseBreakScope(m_Code.size());
 }
 
 void X64Generator::Visit(ForStatement* e)
 {
-    registers.push(GetNewRegister());
+    OpenBreakScope();
+    OpenContinueScope();
+
+    m_RegisterStack.push(GetNewRegister());
     e->GetInitialization()->Accept(*this);
-    BeginUnconditionalJumpBackwards();
+    BeginUnconditionalJumpBackward();
     e->GetCondition()->Accept(*this);
     JumpIfConditionIsFalse();
-    {
-        e->GetBody()->Accept(*this);
-        e->GetIteration()->Accept(*this);
-        EndUnconditionalJumpBackwards();
-    }
+
+    e->GetBody()->Accept(*this);
+    uintptr_t iteration_offset = m_Code.size();
+    e->GetIteration()->Accept(*this);
+    EndUnconditionalJumpBackward();
+
     PatchConditionalJumpOffsets();
+
+    CloseContinueScope(iteration_offset);
+    CloseBreakScope(m_Code.size());
+}
+
+void X64Generator::Visit(Break* e)
+{
+    (void)e;
+    m_BreakScopes.top().push_back(m_Code.size());
+
+    // jump
+    PushBytes(0xE9);
+    Push4Bytes(0x00);
+}
+
+void X64Generator::Visit(Continue* e)
+{
+    (void)e;
+    m_ContinueScopes.top().push_back(m_Code.size());
+
+    // jump
+    PushBytes(0xE9);
+    Push4Bytes(0x00);
 }
 
 void X64Generator::Visit(ListExpression* e)
@@ -231,7 +266,7 @@ void X64Generator::Visit(FunctionDeclaration* e)
     PushBytes(0x48, 0x81, 0xEC);
     Push4Bytes(0x00);
 
-    uintptr_t rsp_sub_offset = executable_memory.size() - 4;
+    uintptr_t rsp_sub_offset = m_Code.size() - 4;
 
     // arguments (all doubles)
     const auto& args = e->GetArgumentsIdentifiers();
@@ -260,19 +295,19 @@ void X64Generator::Visit(FunctionDeclaration* e)
 
     // fixup returns
     // probably better to ret on return and not have to fix up offsets
-    while (!return_fixup_offsets.empty())
+    while (!m_ReturnFixupOffsets.empty())
     {
-        const uintptr_t offset = return_fixup_offsets.top();
-        Replace32BitsAtOffset(offset + 1, CalculateRelative32BitOffset(offset + 5, executable_memory.size()));
-        return_fixup_offsets.pop();
+        const uintptr_t offset = m_ReturnFixupOffsets.top();
+        Replace32BitsAtOffset(offset + 1, CalculateRelative32BitOffset(offset + 5, m_Code.size()));
+        m_ReturnFixupOffsets.pop();
     }
 
-    bool should_pad = next_register % 2 == 1; // to preserve 16-bit alignment
-    Replace32BitsAtOffset(rsp_sub_offset, next_register * 8 + should_pad * 8);
+    bool should_pad = m_NextRegister % 2 == 1; // to preserve 16-bit alignment
+    Replace32BitsAtOffset(rsp_sub_offset, m_NextRegister * 8 + should_pad * 8);
 
     // add     rsp, 0x11223344
     PushBytes(0x48, 0x81, 0xC4);
-    Push4Bytes(next_register * 8);
+    Push4Bytes(m_NextRegister * 8);
 
     // mov rsp, rbp
     PushBytes(0x48, 0x89, 0xEC);
@@ -286,8 +321,8 @@ void X64Generator::Visit(TopStatements* e)
 {
     for (const auto& statement : e->GetValues())
     {
-        registers.push(GetNewRegister());
+        m_RegisterStack.push(GetNewRegister());
         statement->Accept(*this);
-        registers.pop();
+        m_RegisterStack.pop();
     }
 }

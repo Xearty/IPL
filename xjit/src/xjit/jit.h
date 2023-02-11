@@ -11,7 +11,7 @@ public:
     X64Generator();
 
     const Byte* CompileFunction(Expression* e);
-    const IPLVector<Byte>& GetMachineCode() const { return executable_memory; }
+    const IPLVector<Byte>& GetMachineCode() const { return m_Code; }
 
     virtual void Visit(LiteralNull* e) override;
     virtual void Visit(LiteralUndefined* e) override;
@@ -32,8 +32,8 @@ public:
     // virtual void Visit(CaseStatement* e) override { (void)e; }
     virtual void Visit(WhileStatement* e) override;
     virtual void Visit(ForStatement* e) override;
-    // virtual void Visit(Break* e) override { (void)e; }
-    // virtual void Visit(Continue* e) override { (void)e; }
+    virtual void Visit(Break* e) override;
+    virtual void Visit(Continue* e) override;
     virtual void Visit(FunctionDeclaration* e) override;
     virtual void Visit(TopStatements* e) override;
     // virtual void Visit(EmptyExpression* e) override { (void)e; }
@@ -63,32 +63,48 @@ private:
     void MovRegNumberRaw(int reg, uint64_t number);
 
     void Replace32BitsAtOffset(uintptr_t offset, uint32_t dword);
+    void PatchUnconditionalJump(uintptr_t instruction_offset, uintptr_t jump_to);
+    void PatchConditionalJump(uintptr_t instruction_offset, uintptr_t jump_to);
 
     void JumpIfConditionIsFalse();
     void PatchConditionalJumpOffsets();
 
-    void BeginUnconditionalJumpForwards();
-    void EndUnconditionalJumpForwards();
+    void BeginUnconditionalJumpForward();
+    void EndUnconditionalJumpForward();
 
-    void BeginUnconditionalJumpBackwards();
-    void EndUnconditionalJumpBackwards();
+    void BeginUnconditionalJumpBackward();
+    void EndUnconditionalJumpBackward();
+
+    void UnconditionalJumpAtOffset(uintptr_t offset);
+
+    void OpenContinueScope();
+    void CloseContinueScope(uintptr_t to_jump_offset);
+
+    void OpenBreakScope();
+    void CloseBreakScope(uintptr_t to_jump_offset);
 
     template <typename... Rest>
     void PushBytes(Rest... rest)
     {
-        (executable_memory.push_back(static_cast<Byte>(rest)), ...);
+        (m_Code.push_back(static_cast<Byte>(rest)), ...);
     }
 
-    int GetNewRegister() { return next_register++; }
+    int GetNewRegister() { return m_NextRegister++; }
     int GetRegisterForExpression(Expression* e);
 
 private:
-    int next_register;
-    IPLVector<Byte> executable_memory;
-    IPLStack<uintptr_t> unconditional_jump_fixup_offsets;
-    IPLStack<uintptr_t> jump_fixup_offsets;
-    IPLStack<uintptr_t> return_fixup_offsets;
-    IPLStack<int> registers;
-    IPLUnorderedMap<IPLString, int> identifier_to_register;
-    std::unordered_set<double> literals;
+    IPLStack<IPLVector<uintptr_t>> m_ContinueScopes;
+    IPLStack<IPLVector<uintptr_t>> m_BreakScopes;
+
+    IPLStack<uintptr_t> m_UnconditionalJumpFixupOffsets;
+    IPLStack<uintptr_t> m_ConditionalJumpFixupOffsets;
+    IPLStack<uintptr_t> m_ReturnFixupOffsets;
+
+    IPLUnorderedMap<IPLString, int> m_IdentifierToRegisterMapping;
+    std::unordered_set<double> m_NumberLiteralSet;
+
+    int m_NextRegister;
+    IPLStack<int> m_RegisterStack;
+
+    IPLVector<Byte> m_Code;
 };
