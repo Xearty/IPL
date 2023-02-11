@@ -187,6 +187,35 @@ TEST_F(JitTest, AssignmentReturnsAssigned)
 	ASSERT_EQ(result, 15.0);
 }
 
+TEST_F(JitTest, And)
+{
+	const auto* executable_code = Compile(
+		" function func(p, q) { "
+		"     return p && q;    "
+		" }                     "
+	);
+	using Function = double(*)(double, double);
+	Function function = (Function)executable_code;
+	double result = function(true, false);
+	ASSERT_EQ(result, 0.0);
+}
+
+// Doesn't parse
+/*
+TEST_F(JitTest, Or)
+{
+	const auto* executable_code = Compile(
+		" function func(p, q) { "
+		"     return p || q;    "
+		" }                     "
+	);
+	using Function = double(*)(double, double);
+	Function function = (Function)executable_code;
+	double result = function(true, false);
+	ASSERT_EQ(result, 0.0);
+}
+*/
+
 TEST_F(JitTest, IfTrue)
 {
 	const auto* executable_code = Compile(
