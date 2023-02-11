@@ -419,3 +419,45 @@ TEST_F(JitTest, FibN)
 	ASSERT_EQ(result, 0.0);
 	ASSERT_EQ(output.str(), "1\n1\n2\n3\n5\n8\n13\n21\n34\n55\n89\n144\n");
 }
+
+TEST_F(JitTest, ForBreakOnNumber)
+{
+	const auto* executable_code = Compile(
+		" function func() {                        "
+		"     for (var i = 0; i < 10; i = i + 1) { "
+		"         print | i;                       "
+		"         if (i == 5) {                    "
+		"             break;                       "
+		"         }                                "
+		"         print | i;                       "
+		"     }                                    "
+		"     return 0;                            "
+		" }                                        "
+	);
+	using Function = double(*)();
+	Function function = (Function)executable_code;
+	double result = function();
+	ASSERT_EQ(result, 0.0);
+	ASSERT_EQ(output.str(), "0\n0\n1\n1\n2\n2\n3\n3\n4\n4\n5\n");
+}
+
+TEST_F(JitTest, ForContinueOnNumber)
+{
+	const auto* executable_code = Compile(
+		" function func() {                        "
+		"     for (var i = 0; i < 10; i = i + 1) { "
+		"         print | i;                       "
+		"         if (i == 5) {                    "
+		"             continue;                    "
+		"         }                                "
+		"         print | i;                       "
+		"     }                                    "
+		"     return 0;                            "
+		" }                                        "
+	);
+	using Function = double(*)();
+	Function function = (Function)executable_code;
+	double result = function();
+	ASSERT_EQ(result, 0.0);
+	ASSERT_EQ(output.str(), "0\n0\n1\n1\n2\n2\n3\n3\n4\n4\n5\n6\n6\n7\n7\n8\n8\n9\n9\n");
+}
