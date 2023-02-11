@@ -11,7 +11,6 @@ void X64Generator::ResetState()
     IPLStack<uintptr_t>().swap(return_fixup_offsets);
     IPLStack<int>().swap(registers);
     IPLUnorderedMap<IPLString, int>().swap(identifier_to_register);
-    std::unordered_set<double>().swap(literals);
 }
 
 void X64Generator::SetIdentifierRegister(const IPLString& name, int reg)

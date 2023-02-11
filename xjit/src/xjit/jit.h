@@ -86,8 +86,8 @@ private:
     int next_register;
     IPLVector<Byte> executable_memory;
     IPLStack<uintptr_t> unconditional_jump_fixup_offsets;
-    IPLStack<uintptr_t> jump_fixup_offsets; // contains jump offsets for if, switch and loops
-    IPLStack<uintptr_t> return_fixup_offsets; // contains the jump offsets for return statements
+    IPLStack<uintptr_t> jump_fixup_offsets;
+    IPLStack<uintptr_t> return_fixup_offsets;
     IPLStack<int> registers;
     IPLUnorderedMap<IPLString, int> identifier_to_register;
     std::unordered_set<double> literals;
