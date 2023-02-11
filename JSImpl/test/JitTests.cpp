@@ -155,6 +155,24 @@ TEST_F(JitTest, Assignment)
 	ASSERT_EQ(result, 125.0);
 }
 
+TEST_F(JitTest, AssignmentNegativeNumber)
+{
+	const auto* executable_code = Compile(
+		" function func() {                       "
+		"     var variable = -1;                  "
+		"     print | variable;                   "
+		"     variable = -2;                      "
+		"     print | variable;                   "
+		"     return variable;                    "
+		" }                                       "
+	);
+	using Function = double(*)();
+	Function function = (Function)executable_code;
+	double result = function();
+	ASSERT_EQ(result, -2.0);
+	ASSERT_EQ(output.str(), "-1\n-2\n");
+}
+
 TEST_F(JitTest, AssignmentReturnsAssigned)
 {
 	const auto* executable_code = Compile(
@@ -489,13 +507,14 @@ TEST_F(JitTest, WhileContinueOnNumber)
 {
 	const auto* executable_code = Compile(
 		" function func() {                        "
+		"     var i = -1;                          "
 		"     while (i < 10) {                     "
+		"         i = i + 1;                       "
 		"         print | i;                       "
 		"         if (i == 5) {                    "
 		"             continue;                    "
 		"         }                                "
 		"         print | i;                       "
-		"         i = i + 1;                       "
 		"     }                                    "
 		"     return 0;                            "
 		" }                                        "
