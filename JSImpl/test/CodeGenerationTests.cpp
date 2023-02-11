@@ -1,7 +1,7 @@
-#include <src/CommonTypes.h>
-#include <src/Lexer.h>
-#include <src/Parser.h>
-#include "src/ByteCodeGenerator.h"
+#include <CommonTypes.h>
+#include <Lexer.h>
+#include <Parser.h>
+#include "ByteCodeGenerator.h"
 
 #include <gtest/gtest.h>
 

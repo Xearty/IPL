@@ -9,14 +9,16 @@ project 'Test'
     includedirs {
         'googletest/googletest/include',
         'googletest/googlemock/include',
-        '..',
+        '../src/',
         '../../spasm/src',
         '../../spasm/src/asm',
+        '../../xjit/src'
     }
     links {
         'sprt',
         'spasm_lib',
         'JSLib',
+        'xjit_lib',
         'gtest',
         'gmock',
         'gtest_main',
