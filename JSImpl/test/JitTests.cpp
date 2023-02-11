@@ -155,6 +155,20 @@ TEST_F(JitTest, Assignment)
 	ASSERT_EQ(result, 125.0);
 }
 
+TEST_F(JitTest, AssignmentReturnsAssigned)
+{
+	const auto* executable_code = Compile(
+		" function func() {                       "
+		"     var variable = 5;                   "
+		"     return variable = variable + 10;    "
+		" }                                       "
+	);
+	using Function = double(*)();
+	Function function = (Function)executable_code;
+	double result = function();
+	ASSERT_EQ(result, 15.0);
+}
+
 TEST_F(JitTest, IfTrue)
 {
 	const auto* executable_code = Compile(
