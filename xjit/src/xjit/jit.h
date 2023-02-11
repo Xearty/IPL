@@ -101,7 +101,7 @@ private:
     IPLStack<uintptr_t> m_ReturnFixupOffsets;
 
     IPLUnorderedMap<IPLString, int> m_IdentifierToRegisterMapping;
-    std::unordered_set<double> m_NumberLiteralSet;
+    IPLUnorderedSet<double> m_NumberLiteralSet;
 
     int m_NextRegister;
     IPLStack<int> m_RegisterStack;
