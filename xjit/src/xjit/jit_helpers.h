@@ -3,6 +3,7 @@
 #include "jit.h"
 
 #define DOUBLE_ONE 0x3ff0000000000000
+#define SIGN_BIT_MASK_64 0x8000000000000000
 
 namespace
 {

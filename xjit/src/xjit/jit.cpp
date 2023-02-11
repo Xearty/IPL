@@ -116,24 +116,45 @@ void X64Generator::Visit(BinaryExpression* e)
 
 void X64Generator::Visit(UnaryExpression* e)
 {
+    const auto reg = GetRegisterForExpression(e->GetExpr().get());
+    m_RegisterStack.push(reg);
+    e->GetExpr()->Accept(*this);
+    m_RegisterStack.pop();
+
     switch (e->GetOperator())
     {
         // @TODO: don't emit jump if already at the end
         case TokenType::Return:
         {
-            m_RegisterStack.push(GetNewRegister());
-            e->GetExpr()->Accept(*this);
-
             // movsd xmm0, QWORD PTR [bsp-0x00]
             PushBytes(0xF2, 0x0F, 0x10, 0x85);
-            Push4Bytes(GetDisplacement(m_RegisterStack.top()));
-
-            m_RegisterStack.pop();
+            Push4Bytes(GetDisplacement(reg));
 
             // jmp to end of function
             m_ReturnFixupOffsets.push(m_Code.size());
             PushBytes(0xE9);
             Push4Bytes(0x00);
+        } break;
+
+        case TokenType::Minus:
+        {
+            // movsd  xmm0, QWORD PTR[rbp - 0x8]
+            PushBytes(0xF2, 0x0F, 0x10, 0x85);
+            Push4Bytes(GetDisplacement(reg));
+
+            const int mask = GetNewRegister();
+            MovRegNumberRaw(mask, SIGN_BIT_MASK_64);
+
+            // movsd  xmm1, QWORD PTR [rbp-0x10]
+            PushBytes(0xF2, 0x0F, 0x10, 0x8D);
+            Push4Bytes(GetDisplacement(mask));
+
+            // pxor xmm0, xmm1
+            PushBytes(0x66, 0x0F, 0xEF, 0xC1);
+
+            // movq    QWORD PTR [rbp+0x0], xmm0
+            PushBytes(0x66, 0x0F, 0xD6, 0x85);
+            Push4Bytes(GetDisplacement(m_RegisterStack.top()));
         } break;
     }
 }
